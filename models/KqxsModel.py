@@ -1,4 +1,4 @@
-class Kqxs:
+class KqxsModel:
 	def __init__(self, database):
 		self.db = database
 	def getResults(self):

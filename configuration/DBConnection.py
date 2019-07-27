@@ -1,38 +1,29 @@
-import psycopg2
+# -*- coding: utf-8 -*-
+import sys
+sys.path.insert(1, '/home/kl/projects/perdator')
 from configuration.Configuration import Configuration
-import psycopg2.extras
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from entities.KqxsEntity import KqxsEntity
 
 class DBConnection:
     def __init__(self):
         configuration = Configuration()
         self.configParser = configuration.getConfigParser()
-        schema = self.configParser.get('POSTGRESQL', 'schema')
-        self.conn = psycopg2.connect(
-            "host='{}' dbname='{}' user='{}' password='{}' port='{}'". format(
-                self.configParser.get('POSTGRESQL', 'host'),
-                self.configParser.get('POSTGRESQL', 'dbname'),
+        # create an engine
+        self.engine = create_engine('postgresql://{}:{}@{}:{}/{}'. format(
                 self.configParser.get('POSTGRESQL', 'username'),
                 self.configParser.get('POSTGRESQL', 'password'),
-                self.configParser.get('POSTGRESQL', 'port')))
-        cur = self.conn.cursor()
-        if schema is not None and schema != '':
-            cur.execute("SET search_path TO {}". format(schema))
+                self.configParser.get('POSTGRESQL', 'host'),
+                self.configParser.get('POSTGRESQL', 'port'),
+                self.configParser.get('POSTGRESQL', 'dbname')))
+        # create a configured "Session" class
+        self.Session = sessionmaker(bind=self.engine)
+        # create a Session
+        self.session = self.Session()
 
-    def getDbConnection(self):
-        return self.conn
-
-    def fetchAll(self, query):
-        cur = self._executeQuery(query)
-        rows = cur.fetchall()
-        return rows
-
-    def fetchOne(self, query):
-        cur = self._executeQuery(query)
-        rows = cur.fetchone()
-        return rows
-
-	# Execute the query and return the cursor object
-    def _executeQuery(self, query):
-        cur = self.conn.cursor(cursor_factory = psycopg2.extras.DictCursor)
-        cur.execute(query)
-        return cur
+    def getSession(self):
+        return self.session
+conn = DBConnection()
+e = conn.session.query(KqxsEntity).filter(KqxsEntity.id == 2).first()
+print(e.place + str(e.dayOfWeek)+ str(e.date))
