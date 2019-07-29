@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-import sys
-sys.path.insert(1, '/home/kl/projects/perdator')
 from configuration.Configuration import Configuration
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -24,6 +21,3 @@ class DBConnection:
 
     def getSession(self):
         return self.session
-conn = DBConnection()
-e = conn.session.query(KqxsEntity).filter(KqxsEntity.id == 2).first()
-print(e.place + str(e.dayOfWeek)+ str(e.date))
