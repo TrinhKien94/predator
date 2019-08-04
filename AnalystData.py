@@ -35,12 +35,6 @@ def convertPlaceToNumber(place):
         return 7
     else:
         return 2
-def euclideanDistance(instance1, instance2):
-    distance = 0
-    length = len(instance1)
-    for x in range(length):
-        distance += pow((instance1[x] - instance2[x]), 2)
-    return math.sqrt(distance)
 # print('Distance: ' + repr(distance))
 # test = KqxsEntity.query.filter_by().first()
 query = conn.session.query(KqxsEntity).order_by(KqxsEntity.date.desc())
@@ -72,26 +66,25 @@ for i in range(1,df['db'].count(),1):
     df['label'][i] = df['db'][i-1][-2:]
 X = df.drop(columns=['label'])
 y = df['label'].values
-from sklearn.model_selection import train_test_split#split dataset into train and test data
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=1, stratify=y)
-# Create KNN classifier
-knn = KNeighborsClassifier(n_neighbors = 2, algorithm='ball_tree')# Fit the classifier to the data
-knn.fit(X_train,y_train)
-#show first 5 model predictions on the test data
-print(knn.predict(X_test)[0:5])
-#check accuracy of our model on the test data
 
-print(knn.score(X_test, y_test))
+# from sklearn.model_selection import train_test_split#split dataset into train and test data
+# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=1, stratify=y)
+# # Create KNN classifier
+# knn = KNeighborsClassifier(n_neighbors = 2, algorithm='ball_tree')# Fit the classifier to the data
+# knn.fit(X_train,y_train)
+# #show first 5 model predictions on the test data
+# print(knn.predict(X_test)[0:5])
+# #check accuracy of our model on the test data
+# print(knn.score(X_test, y_test))
 
-# test_X = X.iloc[0]
-# test_y = y[0]
-# training_X = X.iloc[1:]
-# training_y = y.iloc[1:]
-# df.set_index('label',inplace=True)
-# df.plot(figsize=(18,5))
-# plt.show()
-print(df.shape)
-print(df.iloc[:3])
+# # test_X = X.iloc[0]
+# # test_y = y[0]
+# # training_X = X.iloc[1:]
+# # training_y = y.iloc[1:]
+# # df.set_index('label',inplace=True)
+# # df.plot(figsize=(18,5))
+# # plt.show()
+# print(df.shape)
 # print(type(df.iloc[0]['date']))
 # print(df)
 # for test in tests:
@@ -101,3 +94,15 @@ print(df.iloc[:3])
 # kqEncoded = le.fit_transform(tests)
 # print(kqEncoded)
 # conn.session.
+arr = df.to_numpy()
+arr = arr.astype(int)
+print(arr[:3])
+print(arr[:3][0][3] - arr[:3][1][3])
+trainingSet=[]
+testSet=[]
+predictions=[]
+k = 3
+from sklearn.model_selection import train_test_split#split dataset into train and test data
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=1, stratify=y)
+print('Train set: ' + repr(len(trainingSet)))
+print('Test set: ' + repr(len(testSet)))
