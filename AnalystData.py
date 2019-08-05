@@ -101,21 +101,25 @@ print(arr[:3][0][3] - arr[:3][1][3])
 trainingSet=[]
 testSet=[]
 predictions=[]
-k = 3
+k = 20
 from KNNImpl import getNeighbors
 # from KNNImpl import getResponse
 from KNNImpl import getAccuracyForMultiPredict
 from sklearn.model_selection import train_test_split#split dataset into train and test data
-trainingSet, testSet = train_test_split(arr, test_size=0.1, random_state=1, stratify=y)
+trainingSet, testSet = train_test_split(arr, test_size=0.3, random_state=1, stratify=y)
 print('Train set: ' + repr(len(trainingSet)))
 print('Test set: ' + repr(len(testSet)))
 for x in range(len(testSet)):
     neighbors = getNeighbors(trainingSet, testSet[x], k)
     multiPredictions = [row[-1] for row in neighbors]
-    print(('> predicted='+','.join(multiPredictions)+'---------actual='+str(test[-1]))
+    multiPredictions = list(set(multiPredictions))
+    print(multiPredictions)
+    print('> predicted len ='+str(len(multiPredictions))+'---------actual='+str(testSet[x][-1]))
 #     result = getResponse(neighbors)
     predictions.append(multiPredictions)
 accuracy = getAccuracyForMultiPredict(testSet, predictions)
+print(accuracy)
+
 # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=1, stratify=y)
 # print('Train set: ' + repr(len(trainingSet)))
 # print('Test set: ' + repr(len(testSet)))
