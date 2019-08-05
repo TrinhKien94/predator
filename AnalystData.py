@@ -102,7 +102,20 @@ trainingSet=[]
 testSet=[]
 predictions=[]
 k = 3
+from KNNImpl import getNeighbors
+# from KNNImpl import getResponse
+from KNNImpl import getAccuracyForMultiPredict
 from sklearn.model_selection import train_test_split#split dataset into train and test data
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=1, stratify=y)
+trainingSet, testSet = train_test_split(arr, test_size=0.1, random_state=1, stratify=y)
 print('Train set: ' + repr(len(trainingSet)))
 print('Test set: ' + repr(len(testSet)))
+for x in range(len(testSet)):
+    neighbors = getNeighbors(trainingSet, testSet[x], k)
+    multiPredictions = [row[-1] for row in neighbors]
+    print(('> predicted='+','.join(multiPredictions)+'---------actual='+str(test[-1]))
+#     result = getResponse(neighbors)
+    predictions.append(multiPredictions)
+accuracy = getAccuracyForMultiPredict(testSet, predictions)
+# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=1, stratify=y)
+# print('Train set: ' + repr(len(trainingSet)))
+# print('Test set: ' + repr(len(testSet)))
