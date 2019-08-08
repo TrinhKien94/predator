@@ -62,8 +62,9 @@ df = df.drop(columns=['date'])
 # df['tail9'] = df['tail9'].apply(lambda x: np.array(x.split(',')))
 # df['date'] = df ['date'].apply(lambda x: time.mktime(datetime.strptime(x,'%Y-%m-%d')).timetuple())
 # print(df['db'].apply(lambda x: x[-2:])[1])
-for i in range(1,df['db'].count(),1):
-    df['label'][i] = df['db'][i-1][-2:]
+with concurrent.futures.ThreadPoolExecutor(max_workers=1000) as executor:
+    for i in range(1,df['db'].count(),1):
+        df['label'][i] = df['db'][i-1][-2:]
 X = df.drop(columns=['label'])
 y = df['label'].values
 
@@ -101,7 +102,7 @@ print(arr[:3][0][3] - arr[:3][1][3])
 trainingSet=[]
 testSet=[]
 predictions=[]
-k = 20
+k = 50
 from KNNImpl import getNeighbors
 # from KNNImpl import getResponse
 from KNNImpl import getAccuracyForMultiPredict

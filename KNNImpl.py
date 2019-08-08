@@ -32,7 +32,7 @@ def getNeighbors(trainingSet, testInstance, k):
     distances.sort(key=operator.itemgetter(1))
     averageDistance = averageDistance / len(trainingSet)
     averagePoin = 0
-    while averagePoin < len(distances)) and distances[averagePoin][1] < averageDistance:
+    while averagePoin < len(distances) and distances[averagePoin][1] < averageDistance:
         averagePoin = averagePoin + 1
     neighbors = []
     x = averagePoin
@@ -42,7 +42,7 @@ def getNeighbors(trainingSet, testInstance, k):
             neighbors.append(distances[x][0])
         x = x + 1
     x = averagePoin - 1
-    while len(setPredictions) < k-k/2 and x > 0:
+    while len(setPredictions) < k and x > 0:
         if distances[x][0][-1] not in setPredictions:
             setPredictions.append(distances[x][0][-1])
             neighbors.append(distances[x][0])

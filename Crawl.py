@@ -62,7 +62,7 @@ class Crawl:
     def getContentUrls(self,startDate):
         present = datetime.now()
         date = startDate
-        with concurrent.futures.ThreadPoolExecutor(max_workers=30) as executor:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=1000) as executor:
             while date < present:
                 executor.map(self.getWebContent,(date,))
                 date = self.nextDate(date)
